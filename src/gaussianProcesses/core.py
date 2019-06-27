@@ -3,8 +3,6 @@ import pdb
 import math
 import numpy as np
 
-from kernels import SquaredExponentialKernel
-
 class GPMarginalLogLikelihood(object):
     def __init__(self, x, y, kernel):
         self._x = x
