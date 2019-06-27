@@ -1,7 +1,6 @@
 
-def test-SquaredExponentialKernel-_k()
+def test_SquaredExponentialKernel__k():
     return 0
 
-def test-SquaredExponentialKernel-_kGrad()
+def test_SquaredExponentialKernel__kGrad():
     return 0
-
