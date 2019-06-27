@@ -1,3 +1,5 @@
 *.pyc
 *~
-*/figures/*
+**/figures/*
+**/results/*
+.cache/*
