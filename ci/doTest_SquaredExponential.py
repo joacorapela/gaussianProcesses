@@ -1,6 +1,7 @@
 
 import pdb
 import sys
+sys.path.append('../src/gaussianProcesses/')
 from test_SquaredExponential import test_k
 
 def main(argv):
