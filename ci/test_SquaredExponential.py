@@ -8,7 +8,7 @@ from kernels import SquaredExponentialKernel
 
 def test_k():
     tol = 1e-6
-    dataFilename = os.path.join(os.path.dirname(__file__, "results/squaredExponentialKernel_testData.csv"))
+    dataFilename = os.path.join(os.path.dirname(__file__), "results/squaredExponentialKernel_testData.csv")
     df = pd.read_csv(dataFilename)
     kernel = SquaredExponentialKernel()
 
