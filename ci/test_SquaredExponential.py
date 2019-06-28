@@ -21,6 +21,4 @@ def test_k():
         k  = df.loc[i, "k"]
         params = {"l": l, "sf": sf, "sn": sn}
         newK = kernel._k(x1=x1, x2=x2, params=params)
-        if abs(newK-k)>tol: 
-            return 1
-    return 0
+        assert(abs(newK-k)<tol)
