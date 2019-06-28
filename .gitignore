@@ -3,5 +3,5 @@
 *~
 **/figures/*
 **/results/*
-.cache/*
+**/.cache/*
 !ci/results/squaredExponentialKernel_testData.csv
