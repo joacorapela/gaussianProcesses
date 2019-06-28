@@ -25,16 +25,18 @@ class Kernel(object):
         return K
 
     def buildKSampleGrad(self, x1, x2, params):
-        answer = []
-        for l in range(len(params)):
-            emptyMatrix = np.empty((len(x1), len(x2)))
-            emptyMatrix[:] = np.nan
-            answer.append(emptyMatrix)
+        answer = {}
         for i in range(len(x1)):
             for j in range(len(x2)):
                 grad = self._kGrad(x1=x1[i], x2=x2[j], params=params)
+                gradKeys = grad.keys()
+                if len(answer)==0:
+                    for l in range(len(gradKeys)):
+                        emptyMatrix = np.empty((len(x1), len(x2)))
+                        emptyMatrix[:] = np.nan
+                        answer.update({gradKeys[l]:emptyMatrix})
                 for l in range(len(grad)):
-                    answer[l][i,j]=grad[l]
+                    answer[grad.keys[l]][i,j]=grad[l]
         return answer
 
 class SquaredExponentialKernel(Kernel):
@@ -57,6 +59,6 @@ class SquaredExponentialKernel(Kernel):
         dl = sf**2/l**3*(x1-x2)**2*math.exp(-1/(2*l**2)*(x1-x2)**2)
         dsf = 2*math.exp(-1/(2*l**2)*(x1-x2)**2)*sf
         dsn = 2*(1 if x1==x2 else 0)*sn
-        answer = np.array([dl, dsf, dsn])
+        answer = {"dl": dl, "dsf": dsf, "dsn": dsn}
                            
         return(answer)

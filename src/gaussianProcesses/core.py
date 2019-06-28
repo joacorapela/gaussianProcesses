@@ -8,6 +8,7 @@ class GPMarginalLogLikelihood(object):
         self._x = x
         self._y = y
         self._kernel = kernel
+
         self._kyInv = None
         self._logdetKy = None
         self._params = None
@@ -47,10 +48,12 @@ class GPMarginalLogLikelihood(object):
 
         alpha = np.dot(a=self._kyInv, b=self._y)
         kyGrad = self._kernel.buildKSampleGrad(x1=self._x, x2=self._x, params=params)
-        grad = np.empty(len(params))
+        gradValues = np.empty(len(params))
         matrixConst = np.outer(a=alpha, b=alpha)-self._kyInv
-        for i in range(len(params)):
-            grad[i] = .5*np.trace(np.matmul(matrixConst, kyGrad[i]))
+        for i in range(len(kyGrad.keys())):
+            gradValues[i] = .5*np.trace(np.matmul(matrixConst, 
+                                                   kyGrad.values[i]))
+        answer = dictionary(keys=kyGrad.keys(), values=gradValues)
         return grad
 
     def evalWithGradient(self, params):
