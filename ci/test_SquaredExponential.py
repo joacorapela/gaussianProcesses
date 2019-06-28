@@ -22,6 +22,5 @@ def test_k():
         params = {"l": l, "sf": sf, "sn": sn}
         newK = kernel._k(x1=x1, x2=x2, params=params)
         if abs(newK-k)>tol: 
-            pdb.set_trace()
             return 1
     return 0
