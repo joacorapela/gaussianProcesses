@@ -3,7 +3,6 @@ import sys
 import pdb
 import pytest
 import pandas as pd
-sys.path.append("../src/gaussianProcesses")
 from kernels import SquaredExponentialKernel
 
 def test_k():
