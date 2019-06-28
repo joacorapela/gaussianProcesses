@@ -45,8 +45,8 @@ class SquaredExponentialKernel(Kernel):
         l = params["l"]
         s2f = params["sf"]**2
         s2n = params["sn"]**2
-        # answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)
-        answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)*3
+        answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)
+        # answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)*3
 
         if x1==x2:
             answer = answer + s2n
