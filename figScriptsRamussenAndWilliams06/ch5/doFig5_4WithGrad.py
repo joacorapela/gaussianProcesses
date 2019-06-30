@@ -3,11 +3,15 @@ import sys
 import pdb
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+srcGaussianProcessesDirname = os.path.join(os.path.dirname(__file__),
+                                            '../../src/gaussianProcesses')
+sys.path.append(srcGaussianProcessesDirname)
 from core import GPMarginalLogLikelihood
 from kernels import SquaredExponentialKernel
 
 def main(argv):
-    dataFilenamePattern = "results/dataFig2_5_l%.2f_sf%.2f_sn%.2f.npz"
+    dataFilenamePattern = "../ch2/results/dataFig2_5_l%.2f_sf%.2f_sn%.2f.npz"
 
     if len(argv)!=5:
         raise ValueError("%s requires four arguments: <nro sample points per axis> <trueL> <trueSf> <trueSn>"%(argv[0]))
@@ -17,7 +21,8 @@ def main(argv):
     lStart = -1.0
     lStop = 1.0
     nLevels = 30
-    tooSmallThr = -20
+    tooSmallValueThr = -25
+    tooLargeGradThr = 55
     annotateColor = "red"
     xlabel = "characteristic lengthscale"
     ylabel = "noise standard deviation"
@@ -52,16 +57,18 @@ def main(argv):
         sn = sns[i]
         for j in range(len(ls)):
             l = ls[j]
-            params = {"l": l, "sf": sf, "sn": sn}
+            params = [l, sf, sn]
             res = ml.evalWithGradient(params=params)
             mls[i, j] = res['value']
             grad = res['grad']
             dL[i,j] = grad[0]
             dSn[i,j] = grad[2]
-    tooSmallIndices = np.where(mls<tooSmallThr)
-    mls[tooSmallIndices] = tooSmallThr
-    dL[tooSmallIndices] = 0
-    dSn[tooSmallIndices] = 0
+    tooSmallValueIndices = np.where(mls<tooSmallValueThr)
+    mls[tooSmallValueIndices] = tooSmallValueThr
+    gradL2Norms = np.sqrt(dL**2+dSn**2)
+    tooLargeGradIndices = np.where(gradL2Norms>tooLargeGradThr)
+    dL[tooLargeGradIndices] *= tooLargeGradThr/gradL2Norms[tooLargeGradIndices]
+    dSn[tooLargeGradIndices] *= tooLargeGradThr/gradL2Norms[tooLargeGradIndices]
 
     plt.figure()
     x = ls
@@ -70,22 +77,11 @@ def main(argv):
     Z = mls
     plt.contour(X, Y, Z, nLevels)
     plt.plot([trueL], [trueSn], marker='*', color='red')
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-
-    plt.figure()
     plt.quiver(X, Y, dL, dSn)
-    # plt.grid()
-    # plt.colorbar()
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-
-    # figFilename = figFilenamePattern%(trueL, trueSf, trueSn)
-    # plt.savefig(fname=figFilename)
 
     plt.show()
 
