@@ -3,6 +3,7 @@ import sys
 import pdb
 import os
 import pytest
+import numpy as np
 import pandas as pd
 from kernels import SquaredExponentialKernel
 
@@ -19,6 +20,6 @@ def test_k():
         sf  = df.loc[i, "sf"]
         sn  = df.loc[i, "sn"]
         k  = df.loc[i, "k"]
-        params = {"l": l, "sf": sf, "sn": sn}
+        params = np.array([l, sf, sn])
         newK = kernel._k(x1=x1, x2=x2, params=params)
         assert(abs(newK-k)<tol)
