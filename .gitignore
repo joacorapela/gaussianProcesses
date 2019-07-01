@@ -5,3 +5,4 @@
 **/results/*
 **/.cache/*
 !ci/results/squaredExponentialKernel_testData.csv
+ipynb/.ipynb_checkpoints/
