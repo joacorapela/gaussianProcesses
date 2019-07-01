@@ -44,7 +44,6 @@ class SquaredExponentialKernel(Kernel):
         s2f = params[1]**2
         s2n = params[2]**2
         answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)
-        # answer = s2f*math.exp(-1/(2*l**2)*(x2-x1)**2)*3
 
         if x1==x2:
             answer = answer + s2n
@@ -57,6 +56,30 @@ class SquaredExponentialKernel(Kernel):
 
         dl = sf**2/l**3*(x1-x2)**2*math.exp(-1/(2*l**2)*(x1-x2)**2)
         dsf = 2*math.exp(-1/(2*l**2)*(x1-x2)**2)*sf
+        dsn = 2*(1 if x1==x2 else 0)*sn
+        answer = np.array([dl, dsf, dsn])
+                           
+        return(answer)
+
+class PeriodicRandomFunctionKernel(Kernel):
+
+    def _k(self, x1, x2, params):
+        l = params[0]
+        s2f = params[1]**2
+        s2n = params[2]**2
+        answer = s2f*math.exp(-(2*math.sin((x2-x1)/2)**2)/l**2)
+
+        if x1==x2:
+            answer = answer + s2n
+        return answer
+
+    def _kGrad(self, x1, x2, params):
+        l = params[0]
+        sf = params[1]
+        sn = params[2]
+
+        dl = sf**2*math.exp(-(2*math.sin((x2-x1)/2)**2)/l**2)*4*math.sin((x2-x1)/2)**2/l**3
+        dsf = 2*sf*math.exp(-(2*math.sin((x2-x1)/2)**2)/l**2)
         dsn = 2*(1 if x1==x2 else 0)*sn
         answer = np.array([dl, dsf, dsn])
                            
