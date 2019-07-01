@@ -8,7 +8,7 @@ srcGaussianProcessesDirname = os.path.join(os.path.dirname(__file__),
                                             '../../src/gaussianProcesses')
 sys.path.append(srcGaussianProcessesDirname)
 from core import GPMarginalLogLikelihood
-from kernels import SquaredExponentialKernel
+from kernels import SquaredExponentialKernel, PeriodicRandomFunctionKernel
 
 def main(argv):
     dataFilenamePattern = "../ch2/results/dataFig2_5_l%.2f_sf%.2f_sn%.2f.npz"
@@ -32,12 +32,13 @@ def main(argv):
     y = loadRes["y"]
     x0 = np.array([l0, sf0, sn0])
 
-    kSquaredExponential = SquaredExponentialKernel()
-    ml = GPMarginalLogLikelihood(x=x, y=y, kernel=kSquaredExponential)
+    kernel = SquaredExponentialKernel()
+    # kernel = PeriodicRandomFunctionKernel()
+    ml = GPMarginalLogLikelihood(x=x, y=y, kernel=kernel)
     evaluationPoints = [np.array([l0,sf0,sn0])]
 
     def callbackFun(xk):
-        print("evaluation at (%.4f, %.4f)"%(xk[0], xk[1]))
+        print("evaluation at (%.4f, %.4f)"%(xk[0], xk[2]))
         evaluationPoints.append(xk)
 
     def evalWrapper(params, sign=1.0):
