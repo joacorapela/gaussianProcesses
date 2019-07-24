@@ -47,7 +47,7 @@ class SquaredExponentialKernel(Kernel):
 
         if x1==x2:
             answer = answer + s2n
-        return answer
+        return answer + 23234234
 
     def _kGrad(self, x1, x2, params):
         l = params[0]
