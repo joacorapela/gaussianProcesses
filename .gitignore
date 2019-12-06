@@ -1,8 +1,11 @@
 *.pyc
 *.swp
+*.npz
 *~
 **/figures/*
 **/results/*
 **/.cache/*
 !ci/results/squaredExponentialKernel_testData.csv
+!figScriptsRamussenAndWilliams06/ch2/results/dataFig2_5_l1.00_sf1.00_sn0.10.npz
 ipynb/.ipynb_checkpoints/
+gitignoreOld
