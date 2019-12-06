@@ -58,7 +58,7 @@ class SquaredExponentialKernel(Kernel):
         dsf = 2*math.exp(-1/(2*l**2)*(x1-x2)**2)*sf
         dsn = 2*(1 if x1==x2 else 0)*sn
         answer = np.array([dl, dsf, dsn])
-                           
+
         return(answer)
 
 class PeriodicRandomFunctionKernel(Kernel):
@@ -82,5 +82,5 @@ class PeriodicRandomFunctionKernel(Kernel):
         dsf = 2*sf*math.exp(-(2*math.sin((x2-x1)/2)**2)/l**2)
         dsn = 2*(1 if x1==x2 else 0)*sn
         answer = np.array([dl, dsf, dsn])
-                           
+
         return(answer)
